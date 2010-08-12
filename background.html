@@ -1,0 +1,12 @@
+<script>
+var timers = new Array();
+
+function startAutoRefresh(tabId){
+	timers[tabId] = setInterval(function(){
+	    chrome.tabs.executeScript(tabId,{code:"window.location.reload()"})
+	    }
+	    ,parseInt(localStorage["refresh_time"]) * 1000);
+	
+	console.log("tab:"+tabId+" start");
+}
+</script>

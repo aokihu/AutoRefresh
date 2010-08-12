@@ -1,0 +1,13 @@
+{
+  "name": "Auto Refresh",
+  "version": "0.1",
+  "description": "Refresh page by chromeself.",
+  "icons": { "128": "icon_128.png" },
+  "background_page": "background.html",
+  "permissions": ["tabs","http://*/*"],
+  "browser_action": {
+    "default_title": "",
+    "default_icon": "icon_128.png",
+    "default_popup": "popup.html"
+  }
+}

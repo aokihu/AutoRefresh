@@ -1,0 +1,73 @@
+<html>
+<meta http-equiv="Content-Type" content="text/htmll charset=utf-8">
+<head>
+<style>
+body{
+		width:200px
+}
+</style>
+</head>
+<body>
+	
+<label>刷新间隔:</label>
+<select id="refresh-time">
+	
+</select>
+</body>
+<script>
+
+refresh_time_select = document.getElementById("refresh-time");
+
+// 生成时间间隔列表
+var a=1,b=0;
+for(i=0;i<10;i++)
+{
+	a += b;
+	b = b == 1 ? 1 : 0;
+	var c = i + a ;
+	
+	var opt = document.createElement("option");
+	opt.value = c;
+	opt.innerHTML = c;
+	
+	refresh_time_select.appendChild(opt);
+	opt = null;
+}
+
+// 读取本地储存，设置默认间隔
+if((_time = localStorage['refresh_time']) != null)
+{
+	var opts = refresh_time_select.getElementsByTagName("option");
+	for(i=0;i<10;i++)
+	{
+		var opt = opts[i];
+		var val = opt.value;
+		
+		if(_time == val)
+			opt.selected = true;
+	}
+}
+
+// 将刷新间隔时间保存到本地
+refresh_time_select.addEventListener("change",function(event){
+	var _this = event.currentTarget;
+	localStorage['refresh_time'] = _this.value;
+	
+	_view = null;
+	var views = chrome.extension.getViews();
+	for(var i = 0; i < views.length; i++)
+	{
+		var view = views[i];
+		
+		if(view.location.href == chrome.extension.getURL("background.html"))
+		{
+		    _view = view;
+			chrome.tabs.getSelected(null,function(tab){
+				_view.startAutoRefresh(tab.id);
+			});
+		}
+	}
+});
+
+</script>
+</html>
